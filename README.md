@@ -32,4 +32,9 @@ This Python script automates login attempts on a web page protected by a CAPTCHA
 
 python3 captcha_brute_force.py -t traget_url -w wordlist -u username -c captcha_page
 
+## Dependencies
 
+pip3 install --upgrade pip
+pip3 install selenium pillow pytesseract requests
+sudo apt update
+sudo apt install tesseract-ocr
